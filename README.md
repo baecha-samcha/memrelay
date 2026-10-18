@@ -8,6 +8,15 @@ MemRelay stores episodic events, semantic facts, executable procedures, revision
 
 All example data is synthetic (Alice, Bob, Project Atlas). The Alice/Bob selector is **a demo selector, not authentication**. Bind the app to localhost; user graph separation is not a production authorization system.
 
+## Demo and verification
+
+- **Demo video:** recording complete; the public video URL has not been added yet.
+- **Reproduce locally:** follow Quick start below, then click **Run full demo** for the five-scene scenario.
+- **Verified:** 25 pytest tests passed on each of Unix-socket and TCP connections to real FalkorDB. [Execution logs and limitations](docs/VALIDATION.md).
+- **Deployment:** no hosted app is currently provided; complete local setup is included.
+
+The one-button demo always uses **Mock LLM + real FalkorDB**. Interactive API-mode chat is a separate path; see the [verification scope](docs/VALIDATION.md).
+
 ## Quick start
 
 Clone the public repository and run commands from its root:
@@ -17,7 +26,7 @@ git clone https://github.com/baecha-samcha/memrelay.git
 cd memrelay
 ```
 
- Python 3.12+ recommended (verified on Python 3.13.5, Linux x86_64). No local LLM or frontend build tools required.
+Python 3.12+ recommended (verified on Python 3.13.5, Linux x86_64). No local LLM or frontend build tools required.
 
 ```bash
 python3 -m venv .venv
@@ -102,7 +111,7 @@ GEMINI_API_KEY=your-local-key
 # Or: LLM_MODEL=groq/llama-3.3-70b-versatile and GROQ_API_KEY=...
 ```
 
-The adapter requests validated structured intents and uses graph-supplied facts for response generation. It never accepts generated Cypher. Semantic objects must occur literally in the source; overwrite permission also requires a non-hedged explicit correction marker in the actual message. The provider cannot set task state or memory validity. **API mode has not been tested against a live provider because no credentials were supplied.** Model availability/access is provider-dependent. API failures do not silently switch to mock; source/episodic records already written may remain. Generated prose can still be inaccurate; the attached graph evidence is the verifiable record. See [the exact mock/API role comparison and live verification procedure](docs/LLM_VERIFICATION.md).
+The adapter requests validated structured intents and uses graph-supplied facts for response generation. It never accepts generated Cypher. Semantic objects must occur literally in the source; overwrite permission also requires a non-hedged explicit correction marker in the actual message. The provider cannot set task state or memory validity. **The recorded automated verification did not test a live provider because no credentials were available at that time.** Model availability/access is provider-dependent. API failures do not silently switch to mock; source/episodic records already written may remain. Generated prose can still be inaccurate; the attached graph evidence is the verifiable record. See [the exact mock/API role comparison and live verification procedure](docs/LLM_VERIFICATION.md).
 
 Procedures are intentionally an allowlist: `project_summary` + `bullet_list_with_sources`. Executor applies this rule in code to the actual output. Arbitrary stored text is not executed as code or shell commands. Executor's graph-based formatting is deterministic in both modes.
 
@@ -132,6 +141,20 @@ python scripts/browser_smoke.py
 
 ## Graph model and API
 
+The central paths stored in each user graph are:
+
+```text
+User -HAS_SESSION-> Session -HAS_MESSAGE-> Message
+Message -SUPPORTS-> Memory -ABOUT-> Entity
+Memory(new) -SUPERSEDES-> Memory(old)
+Coordinator -CREATED-> Task -ASSIGNED_TO-> Executor
+Coordinator -HANDED_OFF_TO {task_id, status, version}-> Executor
+Task -TRANSITIONED-> TaskEvent
+Task -PRODUCED-> TaskResult -USES_MEMORY-> Memory
+```
+
+`Memory.kind` distinguishes episodic, semantic and procedural memories. Default retrieval selects active memories; superseded facts and source messages remain available for history. Alice and Bob use separate FalkorDB graphs. Executor's result links identify the exact facts and procedures used.
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for model choices, concurrency limits and architecture decisions. Executed parameterized queries live directly in [cypher/](cypher/); they are not separate, drifting examples.
 
 | Endpoint | Purpose |
@@ -155,4 +178,4 @@ Use a stable caller-supplied `task_id` for retryable task submission. Reusing it
 
 [Final PASS / FAIL / NOT TESTED review and five technical Q&As](docs/FINAL_REVIEW.md) describe the submission audit. The pre-fix source-integrity regression and all current test results are linked from the validation record.
 
-[DEMO_SCRIPT.md](DEMO_SCRIPT.md) provides a two-minute recording script. Public source repository: [baecha-samcha/memrelay](https://github.com/baecha-samcha/memrelay). Repository creation and push were authorized by the user. Deployment, registration and hackathon submission have not been performed and require separate approval. No video has been recorded yet.
+[DEMO_SCRIPT.md](DEMO_SCRIPT.md) provides the filming guide. The demo recording is complete; its public URL is pending. Source: [baecha-samcha/memrelay](https://github.com/baecha-samcha/memrelay). Deployment, registration and hackathon submission have not been performed.

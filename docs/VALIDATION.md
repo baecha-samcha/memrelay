@@ -1,8 +1,8 @@
 # Final submission validation record
 
-Date: 2026-10-18 KST. Git history counts and publication status below are the pre-publication audit snapshot; current publication status is tracked in README. Commands run from the repository root. The current audit is separate from the previous MVP verification; historical runs are not added together as distinct tests.
+Date: 2026-10-18 KST. Git history counts and publication status below are the pre-publication audit snapshot; current publication and video status is tracked in README. The public repository has since been created and pushed, and the participant reports that recording is complete; no video URL has been supplied for playback review. Commands run from the repository root. The current audit is separate from the previous MVP verification; historical runs are not added together as distinct tests.
 
-## Current results from captured execution
+## Automated verification results captured before publication
 
 | Status | Check | Actual result / evidence |
 |---|---|---|
@@ -16,7 +16,8 @@ Date: 2026-10-18 KST. Git history counts and publication status below are the pr
 | PASS | Public candidate security review | Heuristic key/PII/private-file scan, ignored dumps/env, empty Git object/history store · [metadata-only output](verification/public-files-audit.json) |
 | NOT TESTED | Live Gemini/Groq | No configured key found; no live provider request made. [Request examples and acceptance checks](LLM_VERIFICATION.md) |
 | NOT TESTED | Cloud / Docker runtime | No Cloud endpoint/credentials; Docker not available. TCP local and FalkorDBLite are tested. |
-| NOT TESTED | Public GitHub / deployment / submission / recorded video | No external action performed. Video script prepared, no video file recorded. |
+| PASS | Public GitHub repository (subsequent update) | [baecha-samcha/memrelay](https://github.com/baecha-samcha/memrelay) is public; source pushed to main. |
+| NOT TESTED | Deployment / submission / video playback | No deployment or submission performed. Recording complete per participant; public video URL and playback review pending. |
 
 `PASS` describes only the named scope. Two 25-test runs are the same suite under two transports, not 50 distinct tests. A failed-task test intentionally expects a durable failed result; that is a passing assertion, not an unreported test failure.
 
@@ -63,7 +64,7 @@ The earlier 20/23/24-test success reports are historical suite sizes, not curren
 - Millisecond timestamps cannot distinguish all intermediate revisions within one millisecond; use SUPERSEDES paths for ordering. Historical source filtering excludes later source additions, while other displayed metadata may reflect subsequent updates.
 - The Alice/Bob selector is not authentication. No pagination, large-data benchmark, full ontology/entity resolution or interactive node graph. Automatic demo graphs accumulate until explicitly removed.
 - Redis SDK errors are mapped to the same sanitized 503 class; a query/server error can therefore share the connection-failure presentation. Review server-side context when diagnosing it.
-- Actual LLM, Cloud, Docker, video recording and external submission remain unverified/not delivered as stated above.
+- Actual LLM, Cloud and Docker remain outside the recorded automated verification. Video recording is complete per participant; playback review and external submission remain pending.
 
 Captured logs contain synthetic data only. Workspace paths are replaced with `<WORKSPACE>` and trailing whitespace is trimmed for publication. Full pip installation chatter and screenshots stay in ignored `artifacts/`. The committed-candidate logs are deliberate review evidence, not database dumps. The scanner is heuristic, not proof that every possible secret format is detectable.
 

@@ -1,8 +1,8 @@
 # MemRelay 제출 전 최종 검토
 
-이 보고서의 커밋·remote 수와 공개 상태는 **최종 점검 당시의 스냅샷**입니다. 이후 사용자가 GitHub 저장소 생성·푸시를 승인했습니다. 현재 공개 진행 상태는 README를 확인하세요.
+이 보고서의 커밋·remote 수와 공개 상태는 **최종 점검 당시의 스냅샷**입니다. 이후 사용자가 GitHub 저장소 생성·푸시를 승인했습니다. 현재 공개·영상 상태는 README를 확인하세요. 공개 저장소 생성과 push는 완료되었으며, 참가자가 영상 녹화 완료를 확인했습니다. 영상 URL은 아직 전달되지 않았습니다.
 
-**로컬 핵심 검증: PASS. 라이브 API·Cloud·Docker 및 외부 제출은 NOT TESTED/미진행입니다.** 공개 저장소와 실제 영상이 아직 없으므로 해커톤 제출 자체가 완료된 상태는 아닙니다.
+**로컬 핵심 검증: PASS. 라이브 API·Cloud·Docker 및 외부 제출은 NOT TESTED/미진행입니다.** 공개 저장소는 생성되었고 영상 녹화도 완료되었습니다. 영상 URL 등록·재생 검수 및 해커톤 제출 완료는 아직 확인하지 않았습니다.
 
 ## 요청 항목별 판정
 
@@ -14,12 +14,12 @@
 | Mock / API 역할 분석 | PASS | [역할 비교·요청 예시](LLM_VERIFICATION.md). Executor는 양쪽 모두 결정적 구현. |
 | 실제 LLM 시나리오 | NOT TESTED | 키 없음. 모델 접근·JSON 응답·생성 문장 품질을 성공으로 보고하지 않음. |
 | 테스트 수·실패 이력 | PASS | Unix와 TCP **각 25 passed**. 수정 전 새 회귀 검사는 **1 failed**. 과거 자원 경합 실패는 별도 이력으로 유지. |
-| 공개 후보 및 Git 이력 검사 | PASS (현재 범위) | [보안 검사 메타데이터](verification/public-files-audit.json). 커밋·Git 객체·remote 0, 검사할 기존 커밋 없음. 소스는 아직 미추적 상태. |
+| 공개 후보 및 Git 이력 검사 | PASS (현재 범위) | [보안 검사 메타데이터](verification/public-files-audit.json). 공개 전 점검 당시 커밋·Git 객체·remote 0. 이후 커밋과 원격 push 완료; 당시 보안 로그는 역사적 기록으로 유지. |
 | 새 설치 검증 | PASS (현재 Linux 범위) | 새 소스 사본·새 venv 설치, pip check, `.env.example`, 실제 DB 앱 데모 성공. Cloud/Docker/다른 OS는 NOT TESTED. |
-| 2분 화면 조작·대본 | PASS | [DEMO_SCRIPT.md](../DEMO_SCRIPT.md): 조작, 출력, 시간표, 그래프 쿼리 및 하지 말아야 할 주장. 영상 파일은 미촬영. |
+| 2분 화면 조작·대본 | PASS | [DEMO_SCRIPT.md](../DEMO_SCRIPT.md): 조작, 출력, 시간표, 그래프 쿼리 및 하지 말아야 할 주장. 영상 녹화 완료(참가자 확인); 링크·내용 검수는 미완료. |
 | AI 코딩 어시스턴트 공개 | PASS | README·대본에 OpenAI Codex 사용 명시. 참가자 직접 검토·이해 필요. |
 
-현재 실행에서 남은 핵심 기능 FAIL은 없습니다. 새로 발견한 출처 무결성 FAIL 하나만 최소 수정했습니다. 모든 외부 공개·배포·제출 작업은 수행하지 않았습니다.
+현재 실행에서 남은 핵심 기능 FAIL은 없습니다. 새로 발견한 출처 무결성 FAIL 하나만 최소 수정했습니다. 저장소 공개와 push는 이후 승인받아 완료했습니다. 외부 배포·해커톤 제출은 수행하지 않았습니다.
 
 ## 실제 코드와 Cypher 흐름
 
@@ -38,7 +38,7 @@
 - **실행법 수정:** Cloud/Docker에는 runtime requirements, Docker-free 경로에만 dev/FalkorDBLite 의존성을 설치하도록 README 정리.
 - **검증 자료:** 실제 TCP cut/restore 스크립트, 비밀값을 출력하지 않는 후보 파일 검사, 실행 로그, API 검증 절차·대본·이 보고서. 새로운 제품 기능이나 핵심 아키텍처 변경 없음.
 
-[정확한 실행 수·실패 이력·Known Limitations](VALIDATION.md)을 함께 검토하세요. 다음 단계는 참가자의 코드 리뷰와 영상 촬영이며, 공개 저장소 생성·푸시·배포·제출은 별도 승인 후 수행합니다.
+[정확한 실행 수·실패 이력·Known Limitations](VALIDATION.md)을 함께 검토하세요. 현재 남은 항목은 영상 URL 등록과 재생 검수, 참가자의 최종 코드 리뷰 및 제출입니다. 저장소 생성·push는 완료했고, 배포·제출은 별도 승인이 필요합니다.
 
 ## 심사위원 기술 질문 5개와 답변
 
