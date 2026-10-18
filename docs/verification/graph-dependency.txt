@@ -1,0 +1,6 @@
+{"check": "graph_revision_changes_answer", "status": "PASS", "before": "Python", "after": "Rust", "graph_prefix": "audit_aa923f81f8c6", "path": "new:Rust -SUPERSEDES-> old:Python", "new_memory_id": "91cafbee-b5e3-4c05-90f7-84a071839840", "old_memory_id": "cf5ea817-1489-404e-9939-08401e8acc52", "source_id": "6599d870-2abf-41de-bf5c-215092313419"}
+{"check": "executor_uses_graph_fact_and_procedure", "status": "PASS", "task_id": "audit-task", "memory_kinds": ["procedural", "semantic"], "transitions": ["pending", "running", "completed"], "result_prefix": "- Project Atlas language: Rust"}
+{"check": "procedure_changes_real_output", "status": "PASS", "alice": "bullets + Rust", "bob": "no bullets + Go"}
+{"check": "actual_tcp_disconnect", "status": "PASS", "http_statuses": {"/api/health": 503, "/api/alice/snapshot": 503, "/api/alice/memories": 503, "/api/chat": 503, "/api/alice/tasks/audit-pending/execute": 503, "/api/alice/resume": 503, "/api/demo": 503}, "static_ui": 200, "browser_indicator": "verified"}
+{"check": "connection_restored_same_app", "status": "PASS", "old_memory": "Rust", "offline_writes": 0, "recovered_task": "completed", "browser_indicator": "verified"}
+{"status": "PASS", "checks": 5, "graph_prefix": "audit_aa923f81f8c6", "scope": "Real local FalkorDB unchanged; only audit app TCP transport was cut."}

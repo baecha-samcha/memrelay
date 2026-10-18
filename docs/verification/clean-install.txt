@@ -1,0 +1,5 @@
+{"phase": "copy_nonignored_source", "status": "PASS", "directory": "<TEMP_CLONE>"}
+{"phase": "pip_install_requirements_dev", "status": "PASS", "exit_code": 0, "elapsed_seconds": 86.86}
+{"phase": "pip_check", "status": "PASS", "exit_code": 0}
+{"phase": "clean_app_real_database_demo", "status": "PASS", "health": 200, "demo": 200, "history": "SUPERSEDES", "task": "completed", "alice": "Rust", "bob": "Go", "versions": {"fastapi": "0.143.5", "falkordb": "1.8.0", "falkordblite": "0.10.0", "litellm": "1.106.0"}}
+{"status": "PASS", "scope": "Fresh venv and copied source; pip install, pip check, .env.example, actual FalkorDBLite and app demo. Same Linux OS, not a clean OS install."}

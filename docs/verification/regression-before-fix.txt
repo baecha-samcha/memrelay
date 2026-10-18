@@ -1,0 +1,21 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_same_object_uncertainty_or_denial_is_not_support _____________
+
+store = <memory.store.Store object at 0x7febdd372660>
+
+    def test_same_object_uncertainty_or_denial_is_not_support(store):
+        c = coordinator(store)
+        c.chat('alice', 'Project Atlas uses Python')
+        for text in ('Maybe Project Atlas uses Python', 'Project Atlas does not use Python'):
+            result = c.chat('alice', text)
+>           assert result['evidence'][0]['status'] == 'disputed'
+E           AssertionError: assert 'active' == 'disputed'
+E
+E             - disputed
+E             + active
+
+tests/test_memory.py:146: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_memory.py::test_same_object_uncertainty_or_denial_is_not_support
+1 failed in 7.68s

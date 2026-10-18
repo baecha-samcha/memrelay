@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MemRelay · Graph Memory</title><link rel="stylesheet" href="/static/style.css"></head>
+<body>
+<header><a class="brand" href="/">◈ <span>MemRelay</span></a><span class="track">GRAPH HACKS 2026 / TRACK 02</span><span id="connection" role="status">연결 확인 중…</span></header>
+<main>
+<section class="intro"><div><div class="eyebrow">ONE GRAPH. SHARED CONTEXT.</div><h1>기억이 이어지면,<br>협업도 이어집니다.</h1><p>기억의 현재와 과거, 그리고 에이전트의 다음 행동까지.<br>FalkorDB에 기록된 근거를 직접 확인하세요.</p></div><div class="hero-path"><span>Message</span><i>SUPPORTS ↓</i><span>Memory</span><i>USES_MEMORY ↑</i><span>Coordinator → Executor</span></div></section>
+<div class="toolbar"><label>가상 사용자 <select id="user"><option value="alice">Alice</option><option value="bob">Bob</option></select></label><small>합성 데이터 · 실제 인증 아님</small><div class="spacer"></div><button id="refresh" class="quiet">새로고침</button><button id="resume" class="quiet">미완료 작업 재개</button><button id="demo">▶ 전체 데모 실행</button></div>
+<p id="error" role="alert" hidden></p>
+<section class="workspace">
+<article class="panel conversation"><div class="panel-title"><h2>대화</h2><span id="mode">MOCK</span></div><div id="chat" aria-live="polite"><p class="hint">아래 예시를 차례로 입력하거나 전체 데모를 실행하세요.</p></div><div class="examples"><button data-text="Project Atlas uses Python">① 사실 저장</button><button data-text="For project summaries use bullet points and cite sources">② 절차 저장</button><button data-text="We switched Project Atlas to Rust">③ 명시적 수정</button><button data-text="What language does Project Atlas use?">④ 현재 조회</button><button data-text="Show Project Atlas history">⑤ 이력 조회</button><button data-text="Create a project summary">⑥ 작업 인계</button></div><form id="form"><label class="sr" for="message">메시지</label><textarea id="message" placeholder="Project Atlas uses Python" required maxlength="4000" rows="2"></textarea><button type="submit">전송 ↗</button></form></article>
+<article class="panel"><div class="panel-title"><h2>기억 그래프</h2><span id="count">0 MEMORIES</span></div><div class="legend"><b>EPISODIC</b><b>SEMANTIC</b><b>PROCEDURAL</b></div><div id="memories" class="scroll"></div></article>
+</section>
+<section class="workspace lower"><article class="panel"><div class="panel-title"><h2>기억 변경 이력</h2><span>SUPERSEDES</span></div><div id="history"></div></article><article class="panel"><div class="panel-title"><h2>에이전트 작업</h2><span>GRAPH HANDOFF</span></div><div id="tasks"></div></article></section>
+<section class="panel evidence-panel"><div class="panel-title"><h2>실행 결과와 근거 경로</h2><span>Task → Result → Memory ← Message</span></div><div id="results"></div></section>
+<section id="demo-panel" class="panel" hidden><div class="panel-title"><h2>5 Scenes / 재현 가능한 데모</h2><span>실제 FalkorDB · MOCK LLM</span></div><p>별도 데모 그래프에 저장합니다. Persistence 장면은 서비스 객체 재생성이며 DB 프로세스는 유지됩니다.</p><div id="demo-scenes"></div></section>
+<footer>MemRelay · FalkorDB is the memory, not a decoration. <a href="/docs">API 문서 ↗</a></footer>
+</main><script src="/static/app.js" defer></script></body></html>

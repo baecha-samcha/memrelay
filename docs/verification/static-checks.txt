@@ -1,0 +1,17 @@
+{"command": ".venv/bin/python -m pip check", "status": "PASS", "exit_code": 0}
+No broken requirements found.
+{"command": "node --check app/static/app.js", "status": "PASS", "exit_code": 0}
+{"command": ".venv/bin/python -m compileall -q app memory agents demo scripts", "status": "PASS", "exit_code": 0}
+{"command": "git count-objects -v", "status": "PASS", "exit_code": 0}
+count: 0
+size: 0
+in-pack: 0
+packs: 0
+size-pack: 0
+prune-packable: 0
+garbage: 0
+size-garbage: 0
+{"command": "git fsck --no-reflogs --unreachable", "status": "PASS", "exit_code": 0}
+notice: HEAD points to an unborn branch (main)
+notice: No default references
+{"command": "restarted workspace Uvicorn: GET /api/health and /", "status": "PASS", "health_http": 200, "ui_http": 200, "database": "connected", "llm_mode": "mock", "database_process_stopped": false}

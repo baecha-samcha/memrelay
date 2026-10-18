@@ -1,0 +1,6 @@
+fastapi==0.143.5
+uvicorn==0.54.0
+falkordb==1.8.0
+litellm==1.106.0
+python-dotenv==1.2.4
+pydantic==2.14.1

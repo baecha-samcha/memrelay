@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "scope": "Git tracked + nonignored untracked candidate files; heuristic patterns, not a universal secret detector",
+  "candidate_count": 62,
+  "tracked_count": 0,
+  "commit_count": 0,
+  "remote_count": 0,
+  "ignore_checks": {
+    ".env": true,
+    ".env.local": true,
+    ".venv/bin/python": true,
+    ".data/falkordb.rdb": true,
+    ".data/appendonlydir/appendonly.aof.1.incr.aof": true,
+    "artifacts/desktop.png": true,
+    "private.rdb": true
+  },
+  "credentials_presence_only": [
+    {
+      "source": "process",
+      "name": "GEMINI_API_KEY",
+      "present": false
+    },
+    {
+      "source": "process",
+      "name": "GROQ_API_KEY",
+      "present": false
+    },
+    {
+      "source": "process",
+      "name": "OPENAI_API_KEY",
+      "present": false
+    },
+    {
+      "source": ".env.example",
+      "name": "GEMINI_API_KEY",
+      "present": false
+    },
+    {
+      "source": ".env.example",
+      "name": "GROQ_API_KEY",
+      "present": false
+    },
+    {
+      "source": ".env.example",
+      "name": "OPENAI_API_KEY",
+      "present": false
+    }
+  ],
+  "findings": [],
+  "history_note": "No commits to inspect"
+}
