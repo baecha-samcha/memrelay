@@ -11,18 +11,27 @@
 
 ## 화면 조작, 예상 출력, 내레이션
 
+아래는 **Knowledge Graph를 포함한 새 2분 촬영·편집 순서**입니다. 기존 영상에 시각화만 추가하려면 문서 아래의 **40초 추가 촬영본**을 사용합니다. 시간은 편집 목표이며 실제 대기 시간은 기기와 연결에 따라 달라집니다.
+
 | 시간 | 정확한 조작·보여줄 화면 | 실제 예상 출력 | 설명 대본 |
 |---|---|---|---|
-| 0:00–0:10 | 제목, `MOCK`, 녹색 연결 표시. **Run full demo** 클릭 | 완료 후 `MEMORIES · DEMO`, 5개 장면의 8개 기록 | “MemRelay는 Track 02, Agent Memory and Coordination 프로젝트입니다. 합성 사용자들의 기억과 두 에이전트의 협업을 실제 FalkorDB에 저장합니다.” |
-| 0:10–0:28 | **Memory graph**에서 semantic·procedural·episodic 배지와 **Source messages · SUPPORTS** 펼치기 | 언어 사실, 요약 절차, 사건 기록. 각 기억의 원본 Message ID·content | “사건, 구조화된 사실, 실행 절차가 같은 Memory 구조에 저장됩니다. 출처는 Message에서 Memory로 이어지는 SUPPORTS 관계입니다.” |
-| 0:28–0:48 | **Memory evolution** → **Revision evidence & IDs** 펼치기. Rust/Python 기억 상태 비교 | Python=`superseded`, Rust=`active`; `new_id`, `old_id`, `relationship=SUPERSEDES` | “Alice가 Python에서 Rust로 바꿨다고 명시하면 새 기억을 만들고, 새 기억에서 이전 기억으로 SUPERSEDES를 연결합니다. 현재 질문은 Rust를 쓰고 이전 사실과 근거도 보존합니다.” |
-| 0:48–1:12 | **Agent tasks** → **Handoff details** 펼치기. **State transitions** 버튼 클릭 후 새 **Transitions recorded in the graph** 펼치기 | `coordinator → executor`, `completed`, version 2; pending(v0) → running(v1) → completed(v2). UUID는 실행마다 다름 | “Coordinator가 그래프에 작업과 인계를 기록합니다. Executor는 할당과 상태를 그래프에서 확인합니다. 버전·실행 토큰·임대를 검사해 같은 작업의 중복 결과 커밋을 막습니다.” |
-| 1:12–1:28 | **Results & evidence** → **Task → Result → Memory ← Message** 펼치기 | `- Project Atlas language: Rust [memory:…; source:…]` 및 `Applied procedure … bullet_list_with_sources` | “Executor는 최신 사실과 저장된 절차를 읽었습니다. 그 절차 때문에 실제 결과가 글머리표와 출처를 포함합니다. 이 경로는 내부 추론이 아니라 검증 가능한 그래프 근거입니다.” |
-| 1:28–1:41 | 아래 **Persistence** 장면 | `New Store/Coordinator objects; same DB client and running DB`, Rust 응답 | “새 Store와 Coordinator 객체에서도 같은 기억을 읽습니다. 이 버튼은 앱이나 DB 프로세스를 재시작하지 않습니다. 실제 두 앱 프로세스 간 복구는 별도 테스트로 확인했습니다.” |
-| 1:41–1:53 | **User Isolation** 장면 | `Before Bob writes: No supported project facts…`, 이후 Bob=`Go`; Alice 결과는 Rust | “Bob의 독립 그래프는 처음에는 프로젝트 사실이 없습니다. Bob은 Go를 저장해 Go로 답하고 Alice는 Rust를 유지합니다. 사용자 선택기는 실제 인증이 아닌 데모용입니다.” |
-| 1:53–2:00 | 준비한 실제 테스트 로그와 연결 검사 요약 잠깐 표시 | pytest 각 33 passed (기존 25 + 시각화 8); 실제 연결 차단 시 7개 API=503, 복원 PASS | “실제 FalkorDB에서 테스트했습니다. 연결을 끊으면 기억 기능은 실패하고, 복원하면 기존 기억과 미완료 작업을 다시 사용합니다.” |
+| 0:00–0:10 | 제목, `MOCK`, 녹색 연결 표시 → **Run full demo**. 완료 후 **Knowledge graph**로 이동 | `DEMO · ALICE`, 그래프 이름·읽은 시각·노드/엣지 수 | “MemRelay는 Track 02 프로젝트입니다. 기억과 두 에이전트의 협업을 실제 FalkorDB에 저장합니다. 지금은 외부 LLM 없이 재현하는 Mock 데모입니다.” |
+| 0:10–0:25 | 전체 그래프의 범례 확인 → 보라색 procedural 노드 클릭 | semantic·procedural·episodic의 다른 색상·모양. 상세에 저장된 절차와 원본 메시지 | “사실, 절차, 사건이 연결된 기억입니다. 노드를 누르면 저장 내용과 출처를 확인합니다. 화면의 관계는 실제 FalkorDB에서 읽었습니다.” |
+| 0:25–0:50 | **Focus revisions** → Rust 클릭 → Python 클릭 | 두 Memory와 두 Message, SUPPORTS 두 개와 SUPERSEDES 하나. Rust=active, Python=superseded | “언어가 Python에서 Rust로 바뀌었습니다. SUPERSEDES는 새 Rust 기억에서 이전 Python 기억으로 향합니다. 이전 사실을 지우지 않아 과거 내용과 각각의 원문도 추적할 수 있습니다.” |
+| 0:50–1:15 | **Focus handoff** → **HANDED_OFF_TO** 선 클릭 → Task 클릭 | Coordinator·Executor·Task·TaskResult와 사용한 기억. 인계의 task ID·상태, Task의 상태·버전·원본 요청 | “Coordinator가 작업을 만들고 Executor에게 인계합니다. Executor는 그래프의 최신 사실과 절차를 읽고 결과를 기록합니다. 인계 관계와 Task의 실제 속성을 확인할 수 있습니다.” |
+| 1:15–1:30 | **USES_MEMORY** 경로를 짚고 **Results & evidence → Task → Result → Memory ← Message** 펼치기 | Rust를 명시한 글머리표와 출처 ID, `Applied procedure … bullet_list_with_sources` | “최신 Rust 사실뿐 아니라 저장된 절차도 사용됐습니다. 그 절차가 결과를 글머리표와 출처를 포함한 형식으로 만듭니다. 이 연결은 검증 가능한 근거입니다.” |
+| 1:30–1:42 | **Persistence** 장면 | `New Store/Coordinator objects; same DB client and running DB`, Rust 응답 | “새 Store와 Coordinator 객체에서도 기억을 읽습니다. 이 장면은 객체를 다시 만든 것이며 앱이나 DB 프로세스를 재시작한 것은 아닙니다.” |
+| 1:42–1:54 | **Knowledge graph**로 돌아와 **Graph scope → Bob · latest demo** | `DEMO · BOB`, Bob의 Go 기억. Alice의 Rust 기억 없음 | “Bob은 별도 그래프의 Go를 사용합니다. Alice의 기억은 섞이지 않습니다. 이 선택기는 그래프 패널만 바꾸며 실제 인증은 아닙니다.” |
+| 1:54–2:00 | 실제 테스트 로그 또는 마무리 자막 | `33 passed`, 저장소 주소, AI 사용 공개 | “실제 FalkorDB에서 33개 테스트를 통과했습니다. Codex를 구현과 검증에 활용했고 설계와 실행 결과를 직접 검토했습니다.” |
 
-자동 데모를 탐색하는 동안 상단 Alice/Bob 선택기를 변경하지 않습니다. 선택기는 기본 사용자 그래프를 읽고, 자동 데모 장면은 별도 그래프를 보여주기 때문입니다. UI의 안내문과 `DEMO` 표기를 화면에 남겨 이 차이를 설명합니다.
+### 화면 이동과 촬영 유의점
+
+- 최신 앱을 실행하고 브라우저를 강력 새로고침합니다. **Run full demo**는 완료 후 결과를 한 번에 표시합니다. 실행 대기를 장면별 애니메이션처럼 설명하지 않습니다.
+- 자동 데모 중 상단 Alice/Bob 선택기는 그대로 둡니다. 상단 선택기는 기본 사용자 그래프로 돌아갑니다. 격리 장면에서는 그래프 내부 **Graph scope → Bob · latest demo**를 사용합니다. 다른 패널은 Alice 데모 내용이 남아 있으므로 그래프 패널을 중심으로 촬영합니다.
+- 검증된 전체 데모 예시는 42개 노드/65개 엣지이고 revision focus는 4개 노드/3개 엣지입니다. 전체 개수와 보이는 개수는 다릅니다. 숫자를 맞추려고 다른 실행 화면을 섞지 않습니다.
+- 드래그·확대/축소·**Fit**·**Auto arrange**는 추가 촬영본에서 시연하거나 그래프 장면에 짧게 넣습니다. 화면 좌표만 바뀝니다.
+- Task와 인계 선의 version은 별도 저장 값이며 항상 같지는 않습니다. [시각화 제약](docs/KNOWLEDGE_GRAPH.md)을 참고합니다.
+- 상태 전이를 자세히 보여주려면 **Agent tasks → Handoff details → State transitions** 후 **Transitions recorded in the graph**를 펼칩니다. 정상 완료 예시는 pending(v0) → running(v1) → completed(v2)입니다. 메인 2분 영상의 필수 조작은 아닙니다.
 
 ## 화면에서 확인할 핵심 그래프 경로
 
@@ -62,14 +71,24 @@ AI 사용 공개 문구: “OpenAI Codex를 설계·구현·테스트·문서 �
 공개 저장소 생성·푸시는 사용자 승인을 받았습니다. 배포·해커톤 제출은 별도 승인 후 진행합니다.
 
 
-## 추가 촬영: 인터랙티브 Knowledge Graph
+## 기존 영상에 넣는 40초 추가 촬영본
 
-기존 녹화 이후 추가된 기능입니다. Uvicorn을 재시작하고 브라우저를 강력 새로고침한 뒤 아래 구간을 촬영할 수 있습니다.
+기존 영상의 기억 변경·인계 설명 구간을 아래 화면으로 교체하거나 연결합니다. 그대로 추가하면 2분을 넘길 수 있으므로 중복 설명과 대기 시간을 편집합니다. **Run full demo** 완료 후 **Knowledge graph**의 `DEMO · ALICE`에서 시작합니다.
 
-1. **Run full demo** → **Knowledge graph**의 `DEMO · ALICE`와 실제 노드/엣지 수를 보여줍니다.
-2. **Focus revisions** → “시간에 따른 변경은 Python에서 Rust이고, 그래프의 SUPERSEDES 화살표는 새 Rust 기억에서 이전 Python 기억으로 향합니다.” Rust 노드를 클릭해 상태·원문을 펼칩니다.
-3. **Focus handoff** → Coordinator, Executor, Task, TaskResult와 실제 HANDED_OFF_TO/USES_MEMORY 경로를 보여줍니다. 관계 클릭으로 task ID와 completed 상태를 확인합니다.
-4. 노드를 드래그하고 +/−, **Fit**, **Auto arrange**를 짧게 시연합니다. 그래프 데이터는 변경되지 않습니다.
-5. **Graph scope → Bob · latest demo**로 Go만 보이고 Rust가 섞이지 않음을 보여줍니다. 이 선택기는 그래프 패널만 바꿉니다.
+| 시간 | 조작·구도 | 설명 대본 |
+|---|---|---|
+| 0:00–0:05 | 전체 그래프와 범례, `DEMO · ALICE` | “실제 FalkorDB의 노드와 관계를 읽기 전용으로 보여줍니다.” |
+| 0:05–0:17 | **Focus revisions** → Rust 클릭. 화살표와 원문 상세 유지 | “Python에서 Rust로 변경됐습니다. 화살표는 새 Rust 기억에서 이전 Python 기억으로 향하며 두 기억의 출처도 보존됩니다.” |
+| 0:17–0:29 | **Focus handoff** → HANDED_OFF_TO 선 클릭 → TaskResult·USES_MEMORY 경로 지목 | “실제 작업 ID와 완료 상태, 결과가 사용한 사실과 절차를 그래프에서 확인합니다.” |
+| 0:29–0:34 | 노드 드래그 → **+** → **Fit** → **Auto arrange** | “확대와 배치는 화면만 바꾸며 원본 그래프는 수정하지 않습니다.” |
+| 0:34–0:40 | **Graph scope → Bob · latest demo** → Go 기억 | “Bob은 별도 그래프의 Go를 사용하며 Alice의 기억과 분리됩니다.” |
 
-“시각화는 실제 FalkorDB를 읽는 읽기 전용 화면이며, 보이지 않는 관계를 추론해 추가하지 않습니다.”라고 설명합니다. 250 노드/600 엣지 제한과 부분 표시 가능성을 전체 DB 완전 시각화로 과장하지 않습니다.
+영문 자막용 문구:
+
+1. “A read-only view of real FalkorDB nodes and relationships.”
+2. “Rust supersedes Python. Both memories retain their original message sources.”
+3. “The graph records the agent handoff and the memories used by the result.”
+4. “Dragging and zooming do not change stored graph data.”
+5. “Bob’s separate graph uses Go, without Alice’s Rust memory.”
+
+노드·엣지가 없으면 연결 표시와 **Reload graph**를 먼저 확인합니다. 장애 중 이전 캡처를 현재 데이터처럼 사용하지 않습니다. 최대 250개 노드/600개 엣지를 불러오므로 부분 표시 안내가 있다면 전체 DB를 모두 표시했다고 말하지 않습니다.

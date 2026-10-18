@@ -4,6 +4,8 @@ The existing graph memory model, Coordinator/Executor paths, mock parser, five-s
 
 ## Use it in the video
 
+See [DEMO_SCRIPT.md](../DEMO_SCRIPT.md) for the integrated two-minute shot order, expected output and narration, plus a 40-second insert for an existing recording.
+
 1. Restart Uvicorn after updating the code, then hard-refresh the browser.
 2. Click **Run full demo**. The graph automatically selects **Alice · latest demo** and displays `DEMO · ALICE`, the exact graph name, read time and loaded/visible counts.
 3. Click **Focus revisions**. The demo shows four nodes and three actual edges: the two language memories, their two original messages, two SUPPORTS edges and `Rust -SUPERSEDES-> Python`. The caption explains the timeline `Python → Rust` without reversing the stored arrow.
