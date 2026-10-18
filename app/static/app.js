@@ -3,7 +3,7 @@ let user = 'alice', generation = 0, busy = false;
 const node = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if(cls) n.className = cls; return n; };
 function badge(text) { return node('span', text, 'badge ' + text); }
 function details(title, value) { const d = node('details'); d.append(node('summary',title),node('pre',typeof value==='string'?value:JSON.stringify(value,null,2))); return d; }
-function connection(ok) { $('connection').textContent = ok ? '● FalkorDB connected' : '● FalkorDB disconnected'; $('connection').classList.toggle('offline', !ok); }
+function connection(ok) { $('connection').textContent = ok ? '● FalkorDB connected' : '● FalkorDB disconnected'; $('connection').classList.toggle('online', ok); $('connection').classList.toggle('offline', !ok); }
 async function api(path, body) {
   let res;
   try { res=await fetch(path, body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); }

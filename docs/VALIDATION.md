@@ -75,3 +75,8 @@ The default browser interface now uses English (`lang="en"`), including demo con
 Browser verification passed: user switching, five-scene demo, Rust result and history, task transition evidence, an exact connected/disconnected indicator, no Korean text in the synthetic demo UI, and mobile width. [Captured output](verification/english-ui-browser.txt). The initial English smoke run passed; a subsequent run exceeded the 30-second demo wait on this small machine. The final run passed with a 90-second demo wait. This is a test wait allowance, not a response-time guarantee. Desktop output was visually inspected.
 
 JavaScript syntax, Python verification-script compilation and the public-candidate secret scan also passed. The 25-test pytest results above remain the earlier backend verification; pytest was not rerun for this copy-only UI change.
+
+
+## Connection badge color follow-up
+
+Connected now explicitly renders a green foreground, pale-green background and green border; the initial checking state is neutral, and disconnected remains red. A targeted browser presentation check passed green → injected 503/red → restored real health/green; [output](verification/connection-colors.txt). The snapshot payload was a browser fixture to isolate this visual check; this is not another database-outage test. An earlier attempt verified the green CSS but timed out waiting 30 seconds for the full snapshot to finish. No graph/agent logic was changed or pytest suite rerun for this style change.

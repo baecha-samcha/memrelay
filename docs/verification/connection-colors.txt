@@ -1,0 +1,3 @@
+PASS: real health response renders green text/dot and pale-green badge. Snapshot fixture isolates this presentation check.
+PASS: injected HTTP 503 renders red text/dot and pale-red badge (UI-only presentation check).
+PASS: restored real health response restores the green badge.
