@@ -66,3 +66,12 @@ The earlier 20/23/24-test success reports are historical suite sizes, not curren
 - Actual LLM, Cloud, Docker, video recording and external submission remain unverified/not delivered as stated above.
 
 Captured logs contain synthetic data only. Workspace paths are replaced with `<WORKSPACE>` and trailing whitespace is trimmed for publication. Full pip installation chatter and screenshots stay in ignored `artifacts/`. The committed-candidate logs are deliberate review evidence, not database dumps. The scanner is heuristic, not proof that every possible secret format is detectable.
+
+
+## English UI follow-up
+
+The default browser interface now uses English (`lang="en"`), including demo controls, memory/source panels, task states and connection errors. README and filming instructions use the actual English control names. Core memory/agent/query logic is unchanged.
+
+Browser verification passed: user switching, five-scene demo, Rust result and history, task transition evidence, an exact connected/disconnected indicator, no Korean text in the synthetic demo UI, and mobile width. [Captured output](verification/english-ui-browser.txt). The initial English smoke run passed; a subsequent run exceeded the 30-second demo wait on this small machine. The final run passed with a 90-second demo wait. This is a test wait allowance, not a response-time guarantee. Desktop output was visually inspected.
+
+JavaScript syntax, Python verification-script compilation and the public-candidate secret scan also passed. The 25-test pytest results above remain the earlier backend verification; pytest was not rerun for this copy-only UI change.

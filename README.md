@@ -65,7 +65,7 @@ Open **http://127.0.0.1:8000**; API docs: **http://127.0.0.1:8000/docs**.
 
 ## One-button demo
 
-Click **전체 데모 실행**. Every run creates an isolated `memrelay_demo_<run>_alice/bob` pair of real graphs, leaving normal demo-user data intact. These graphs persist until explicitly deleted in FalkorDB; repeated runs consume additional database space. Use a disposable DB for repeated rehearsals.
+Click **Run full demo**. Every run creates an isolated `memrelay_demo_<run>_alice/bob` pair of real graphs, leaving normal demo-user data intact. These graphs persist until explicitly deleted in FalkorDB; repeated runs consume additional database space. Use a disposable DB for repeated rehearsals.
 
 1. **Memory Creation:** Alice says `Project Atlas uses Python` and `For project summaries use bullet points and cite sources`. The original events, semantic language fact and procedural rule appear with `Message → SUPPORTS → Memory` evidence.
 2. **Memory Evolution:** `We switched Project Atlas to Rust` supersedes Python. Current queries return Rust; history shows both messages and `new → SUPERSEDES → old`.
@@ -79,7 +79,7 @@ The button always uses **Mock LLM**, even when the interactive chat is configure
 python -m demo.scenario
 ```
 
-The conversational examples in the UI can also be run individually. After creating a task, click **Executor 실행** or **미완료 작업 재개**. For a separate worker process:
+The conversational examples in the UI can also be run individually. After creating a task, click **Run Executor** or **Resume pending tasks**. For a separate worker process:
 
 ```bash
 python -m agents.worker --once
@@ -87,7 +87,7 @@ python -m agents.worker --once
 python -m agents.worker
 ```
 
-To demonstrate a real app-process restart: create a pending task; stop only Uvicorn; start the same command again; click **미완료 작업 재개**. Keep FalkorDB running. Expired running tasks become eligible after their 30-second lease. Completed tasks are not executed again.
+To demonstrate a real app-process restart: create a pending task; stop only Uvicorn; start the same command again; click **Resume pending tasks**. Keep FalkorDB running. Expired running tasks become eligible after their 30-second lease. Completed tasks are not executed again.
 
 ## LLM modes and supported behavior
 

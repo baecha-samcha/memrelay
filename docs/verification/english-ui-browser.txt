@@ -1,0 +1,1 @@
+Browser smoke passed: user switch, five scenes, evidence, offline indicator, mobile layout.

@@ -173,7 +173,7 @@ def main():
                 browser = playwright.chromium.launch(args=['--disable-dev-shm-usage'])
                 page = browser.new_page(viewport={'width': 1100, 'height': 800})
                 page.goto(f'http://127.0.0.1:{port}', wait_until='domcontentloaded', timeout=60000)
-                expect(page.locator('#connection')).to_contain_text('연결됨')
+                expect(page.locator('#connection')).to_have_text('● FalkorDB connected')
                 expect(page.locator('#user')).to_be_enabled()
             gate.cut()  # Closes existing TCP sockets and refuses forwarded traffic.
             checks = [('GET', '/api/health', None), ('GET', '/api/alice/snapshot', None),
@@ -190,7 +190,7 @@ def main():
             assert client.get('/').status_code == 200
             if args.browser:
                 page.click('#refresh')
-                expect(page.locator('#connection')).to_contain_text('연결 장애')
+                expect(page.locator('#connection')).to_have_text('● FalkorDB disconnected')
                 expect(page.locator('#error')).to_be_visible()
             record('actual_tcp_disconnect', http_statuses=statuses, static_ui=200,
                    browser_indicator='verified' if args.browser else 'NOT TESTED')
@@ -203,7 +203,7 @@ def main():
             assert client.post('/api/alice/tasks/audit-pending/execute').json()['result']['status'] == 'completed'
             if args.browser:
                 page.click('#refresh')
-                expect(page.locator('#connection')).to_contain_text('연결됨')
+                expect(page.locator('#connection')).to_have_text('● FalkorDB connected')
                 expect(page.locator('#user')).to_be_enabled()
             record('connection_restored_same_app', old_memory='Rust', offline_writes=0,
                    recovered_task='completed', browser_indicator='verified' if args.browser else 'NOT TESTED')
