@@ -20,7 +20,7 @@
 | 1:12–1:28 | **Results & evidence** → **Task → Result → Memory ← Message** 펼치기 | `- Project Atlas language: Rust [memory:…; source:…]` 및 `Applied procedure … bullet_list_with_sources` | “Executor는 최신 사실과 저장된 절차를 읽었습니다. 그 절차 때문에 실제 결과가 글머리표와 출처를 포함합니다. 이 경로는 내부 추론이 아니라 검증 가능한 그래프 근거입니다.” |
 | 1:28–1:41 | 아래 **Persistence** 장면 | `New Store/Coordinator objects; same DB client and running DB`, Rust 응답 | “새 Store와 Coordinator 객체에서도 같은 기억을 읽습니다. 이 버튼은 앱이나 DB 프로세스를 재시작하지 않습니다. 실제 두 앱 프로세스 간 복구는 별도 테스트로 확인했습니다.” |
 | 1:41–1:53 | **User Isolation** 장면 | `Before Bob writes: No supported project facts…`, 이후 Bob=`Go`; Alice 결과는 Rust | “Bob의 독립 그래프는 처음에는 프로젝트 사실이 없습니다. Bob은 Go를 저장해 Go로 답하고 Alice는 Rust를 유지합니다. 사용자 선택기는 실제 인증이 아닌 데모용입니다.” |
-| 1:53–2:00 | 준비한 실제 테스트 로그와 연결 검사 요약 잠깐 표시 | pytest 각 25 passed; 실제 연결 차단 시 7개 API=503, 복원 PASS | “실제 FalkorDB에서 테스트했습니다. 연결을 끊으면 기억 기능은 실패하고, 복원하면 기존 기억과 미완료 작업을 다시 사용합니다.” |
+| 1:53–2:00 | 준비한 실제 테스트 로그와 연결 검사 요약 잠깐 표시 | pytest 각 33 passed (기존 25 + 시각화 8); 실제 연결 차단 시 7개 API=503, 복원 PASS | “실제 FalkorDB에서 테스트했습니다. 연결을 끊으면 기억 기능은 실패하고, 복원하면 기존 기억과 미완료 작업을 다시 사용합니다.” |
 
 자동 데모를 탐색하는 동안 상단 Alice/Bob 선택기를 변경하지 않습니다. 선택기는 기본 사용자 그래프를 읽고, 자동 데모 장면은 별도 그래프를 보여주기 때문입니다. UI의 안내문과 `DEMO` 표기를 화면에 남겨 이 차이를 설명합니다.
 
@@ -51,7 +51,7 @@ RETURN t.status, m.kind, m.id, s.id;
 
 ## 촬영 범위와 하지 말아야 할 주장
 
-- 25 passed는 개별 검증 실행별 수입니다. Unix/TCP 실행을 합쳐 “서로 다른 테스트 50개”라고 말하지 않습니다. [원본 실행 로그](docs/verification/)를 사용합니다.
+- 최신 33 passed는 개별 검증 실행별 수입니다(기존 25 + 시각화 8). Unix/TCP 실행을 합쳐 “서로 다른 테스트 66개”라고 말하지 않습니다. [원본 실행 로그](docs/verification/)를 사용합니다.
 - 두 역할은 별도 클래스·실행 경로이며 Executor는 결정적 구현입니다. “두 LLM이 자율 토론한다”라고 설명하지 않습니다.
 - 한 버튼 데모는 객체 재생성입니다. 실제 프로세스 재시작을 영상에 넣으려면 별도 일반 Alice 화면에서 pending 작업을 만든 뒤 **Uvicorn만** 종료·재실행하고 **Resume pending tasks**를 누릅니다. DB는 계속 실행 중이라고 설명합니다.
 - 실제 API LLM 호출은 키가 없어 NOT TESTED입니다. mock 데모를 실제 Gemini/Groq 응답이라고 설명하지 않습니다.
@@ -60,3 +60,16 @@ RETURN t.status, m.kind, m.id, s.id;
 AI 사용 공개 문구: “OpenAI Codex를 설계·구현·테스트·문서 작성에 활용했습니다. 참가자는 그래프 모델과 쿼리를 검토하고 실행 결과를 직접 확인합니다.” README에도 같은 사실을 명시합니다.
 
 공개 저장소 생성·푸시는 사용자 승인을 받았습니다. 배포·해커톤 제출은 별도 승인 후 진행합니다.
+
+
+## 추가 촬영: 인터랙티브 Knowledge Graph
+
+기존 녹화 이후 추가된 기능입니다. Uvicorn을 재시작하고 브라우저를 강력 새로고침한 뒤 아래 구간을 촬영할 수 있습니다.
+
+1. **Run full demo** → **Knowledge graph**의 `DEMO · ALICE`와 실제 노드/엣지 수를 보여줍니다.
+2. **Focus revisions** → “시간에 따른 변경은 Python에서 Rust이고, 그래프의 SUPERSEDES 화살표는 새 Rust 기억에서 이전 Python 기억으로 향합니다.” Rust 노드를 클릭해 상태·원문을 펼칩니다.
+3. **Focus handoff** → Coordinator, Executor, Task, TaskResult와 실제 HANDED_OFF_TO/USES_MEMORY 경로를 보여줍니다. 관계 클릭으로 task ID와 completed 상태를 확인합니다.
+4. 노드를 드래그하고 +/−, **Fit**, **Auto arrange**를 짧게 시연합니다. 그래프 데이터는 변경되지 않습니다.
+5. **Graph scope → Bob · latest demo**로 Go만 보이고 Rust가 섞이지 않음을 보여줍니다. 이 선택기는 그래프 패널만 바꿉니다.
+
+“시각화는 실제 FalkorDB를 읽는 읽기 전용 화면이며, 보이지 않는 관계를 추론해 추가하지 않습니다.”라고 설명합니다. 250 노드/600 엣지 제한과 부분 표시 가능성을 전체 DB 완전 시각화로 과장하지 않습니다.

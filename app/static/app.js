@@ -3,7 +3,7 @@ let user = 'alice', generation = 0, busy = false;
 const node = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if(cls) n.className = cls; return n; };
 function badge(text) { return node('span', text, 'badge ' + text); }
 function details(title, value) { const d = node('details'); d.append(node('summary',title),node('pre',typeof value==='string'?value:JSON.stringify(value,null,2))); return d; }
-function connection(ok) { $('connection').textContent = ok ? '● FalkorDB connected' : '● FalkorDB disconnected'; $('connection').classList.toggle('online', ok); $('connection').classList.toggle('offline', !ok); }
+function connection(ok) { $('connection').textContent = ok ? '● FalkorDB connected' : '● FalkorDB disconnected'; $('connection').classList.toggle('online', ok); $('connection').classList.toggle('offline', !ok); if(!ok) window.MemoryGraph?.invalidate('FalkorDB disconnected — graph cleared. Refresh to reload.'); }
 async function api(path, body) {
   let res;
   try { res=await fetch(path, body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); }
@@ -13,7 +13,7 @@ async function api(path, body) {
   return data;
 }
 function error(e) { $('error').hidden=false; $('error').textContent=e.message; }
-async function action(fn) { if(busy)return;busy=true;$('error').hidden=true;document.querySelectorAll('button,select').forEach(n=>n.disabled=true);try{await fn();}catch(e){error(e);}finally{busy=false;document.querySelectorAll('button,select').forEach(n=>n.disabled=n.dataset.terminal==='true');} }
+async function action(fn) { if(busy)return;busy=true;$('error').hidden=true;document.querySelectorAll('button,select').forEach(n=>n.disabled=true);try{await fn();}catch(e){error(e);}finally{busy=false;document.querySelectorAll('button,select').forEach(n=>n.disabled=n.dataset.terminal==='true'||n.dataset.graphDisabled==='true');} }
 function render(data) {
   $('count').textContent = data.memories.length+' MEMORIES';
   for(const id of ['memories','history','tasks','results']) $(id).replaceChildren();
@@ -26,13 +26,14 @@ function render(data) {
   for(const r of data.results){const card=node('div',undefined,'result');card.append(badge(r.status),node('pre',r.content),details('Task → Result → Memory ← Message',r.evidence));$('results').append(card);}
   for(const id of ['memories','history','tasks','results']) if(!$(id).children.length) $(id).append(node('p','No records yet.'));
 }
-async function refresh(){const current=++generation, selected=user;const health=await api('/api/health');connection(true);$('mode').textContent=health.llm_mode.toUpperCase();const data=await api(`/api/${selected}/snapshot`);if(current===generation&&selected===user)render(data);}
+async function refresh(){const current=++generation, selected=user;const health=await api('/api/health');connection(true);$('mode').textContent=health.llm_mode.toUpperCase();const data=await api(`/api/${selected}/snapshot`);if(current===generation&&selected===user){render(data);await window.MemoryGraph?.loadCurrent(selected);}}
 function bubble(role,text){const n=node('div',undefined,'bubble '+role);n.append(node('strong',role),node('span',text));$('chat').append(n);$('chat').scrollTop=$('chat').scrollHeight;return n;}
 $('form').onsubmit=e=>{e.preventDefault();action(async()=>{const text=$('message').value.trim();if(!text)return;bubble('user',text);$('message').value='';const r=await api('/api/chat',{user,text});const n=bubble('coordinator',r.answer);n.append(details('Memories used in this response',r.evidence));await refresh();});};
-$('user').onchange=()=>action(async()=>{user=$('user').value;generation++;$('chat').replaceChildren();for(const id of ['memories','history','tasks','results'])$(id).replaceChildren();await refresh();});
+$('user').onchange=()=>action(async()=>{user=$('user').value;generation++;window.MemoryGraph?.invalidate('Switching user graph…','loading');$('chat').replaceChildren();for(const id of ['memories','history','tasks','results'])$(id).replaceChildren();await refresh();});
 $('refresh').onclick=()=>action(refresh);
 $('resume').onclick=()=>action(async()=>{await api(`/api/${user}/resume`,{});await refresh();});
 document.querySelectorAll('[data-text]').forEach(b=>b.onclick=()=>{$('message').value=b.dataset.text;$('message').focus();});
-$('demo').onclick=()=>action(async()=>{bubble('system','Running five scenes against real FalkorDB…');const data=await api('/api/demo',{});$('demo-panel').hidden=false;$('demo-scenes').replaceChildren();for(const s of data.transcript){const n=node('div',undefined,'scene');n.append(node('h3',s.scene),node('p',s.input||s.scope||'Bob: empty graph → Go'),node('p',s.response?.answer||''));if(s.execution)n.append(node('pre',s.execution.result?.content||''));if(s.empty_bob)n.append(node('p','Before Bob writes: '+s.empty_bob.answer));$('demo-scenes').append(n);}render(data.alice);bubble('system','Demo complete. The panels show an isolated Alice demo graph. Refresh to return to the selected user graph.');$('count').textContent+=' · DEMO';$('demo-scenes').append(details('Full demo evidence · '+data.graph_prefix,data));});
+$('demo').onclick=()=>action(async()=>{bubble('system','Running five scenes against real FalkorDB…');const data=await api('/api/demo',{});$('demo-panel').hidden=false;$('demo-scenes').replaceChildren();for(const s of data.transcript){const n=node('div',undefined,'scene');n.append(node('h3',s.scene),node('p',s.input||s.scope||'Bob: empty graph → Go'),node('p',s.response?.answer||''));if(s.execution)n.append(node('pre',s.execution.result?.content||''));if(s.empty_bob)n.append(node('p','Before Bob writes: '+s.empty_bob.answer));$('demo-scenes').append(n);}user='alice';$('user').value='alice';render(data.alice);await window.MemoryGraph?.registerDemo(data.graph_prefix);bubble('system','Demo complete. The panels show an isolated Alice demo graph. Refresh to return to the selected user graph.');$('count').textContent+=' · DEMO';$('demo-scenes').append(details('Full demo evidence · '+data.graph_prefix,data));});
+window.MemoryGraph?.setConnectionHandler(connection);
 action(refresh);
 setInterval(async()=>{if(busy)return;try{await api('/api/health');connection(true);}catch(e){connection(false);error(e);}},15000);

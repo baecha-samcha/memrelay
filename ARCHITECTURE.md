@@ -103,7 +103,7 @@ No indices or strict DB uniqueness constraints are required for the small demo. 
 | Cloud first; official FalkorDBLite development fallback | Docker is absent in Crostini here. Lite runs actual FalkorDB; architecture still depends on the graph. |
 | Deterministic Executor, optional LiteLLM interpretation/answers | Verifies procedure application and graph evidence without provider availability. |
 | Allowlisted procedure opcode | Stored rules change the output without arbitrary code execution. |
-| No interactive node graph in P0 | The trace panels show real graph paths while keeping reads/writes simple. |
+| Interactive graph added after P0 verification | A separate bounded read-only projection preserves core storage and agent paths; existing trace panels remain. |
 | New graphs for every automatic demo | Repeatable Python→Rust transitions without destructive resets; graphs require eventual cleanup. |
 
 No replacement of the requested core architecture was necessary. The Docker-free database runner is an additional local development option. Runtime packages and tested versions are pinned in requirements files; browser tooling is optional.
@@ -115,3 +115,18 @@ No replacement of the requested core architecture was necessary. The Docker-free
 - [FalkorDB GRAPH.QUERY](https://docs.falkordb.com/commands/graph.query)
 - [Official FalkorDBLite project](https://github.com/FalkorDB/falkordblite)
 - [LiteLLM Gemini provider](https://docs.litellm.ai/docs/providers/gemini)
+
+
+## Read-only visualization addition
+
+`memory/visualization.py` uses `GRAPH.LIST` to determine whether the requested current/demo graph actually exists, then two parameterized `GRAPH.RO_QUERY` calls from `cypher/view_nodes.cypher` and `cypher/view_edges.cypher`. It never calls user initialization, MERGE, graph write queries, or the wrapper helper that swallows list errors. A missing current graph returns an empty projection without creating storage; a missing demo graph returns 404. Connection failure returns sanitized 503.
+
+The projection uses FalkorDB's graph-local internal node/edge IDs (`n<id>`, `e<id>`) to avoid collisions between logical IDs on different node types. Edge endpoints, types and properties come directly from stored relationships; none are synthesized from application snapshots. Nodes are prioritized for agents, facts/procedures, tasks/results, episodes/messages and supporting structure. At most 250 nodes and 600 edges between those selected nodes are returned. One extra row detects truncation; this is a bounded projection, not a complete paginated export. Source details cover only the loaded subgraph.
+
+`GET /api/{user}/graph?demo_id=...` accepts the existing user allowlist and an optional 10-character hexadecimal demo ID. Demo graph names are derived under the server's configured prefix; they remain inspectable across app restarts without an in-process registry. This extends demo inspection, not authentication.
+
+The browser keeps one Cytoscape instance and replaces its elements on context changes. Request serials and AbortController reject late responses. Main user changes return to current graphs; a graph-only scope selector permits explicit demo Alice/Bob inspection. The automatic demo selects demo Alice and aligns the top user selector with the Alice panels. Existing snapshots and demo response schemas are unchanged.
+
+Renderer layout/drag/zoom changes only browser coordinates. No visualization interaction writes positions, nodes or edges to FalkorDB. Structural nodes can be hidden, and focus views filter actual loaded edges. Node detail text uses textContent, not HTML. Stored `SUPERSEDES` points from new to old; the displayed timeline caption separately explains the old-to-new change.
+
+A detected network/503 failure clears elements and selected details, marks the panel stale and cancels in-flight reads. Health recovery alone does not restore old elements. Two RO queries are not a transactionally consistent snapshot during concurrent writes. Sampling limits, read timestamps and partial-view notices are part of the UI; no distributed consistency or FPS claim is added.

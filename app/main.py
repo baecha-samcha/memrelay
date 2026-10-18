@@ -1,12 +1,13 @@
 from pathlib import Path
 from typing import Literal
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from app.config import Settings
 from memory.store import Store, DatabaseUnavailable, Conflict
+from memory.visualization import read_graph, DemoGraphNotFound
 from agents.coordinator import Coordinator
 from agents.executor import Executor
 from agents.llm import LLM
@@ -56,6 +57,13 @@ def create_app(store=None, settings=None):
     @api.get('/api/health')
     def health():
         return {**store.health(), 'llm_mode': settings.llm_mode}
+
+    @api.get('/api/{user}/graph')
+    def graph_view(user: User, demo_id: str | None = Query(default=None, pattern=r'^[0-9a-f]{10}$')):
+        try:
+            return read_graph(store, user, demo_id)
+        except DemoGraphNotFound as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
 
     @api.get('/api/{user}/snapshot')
     def snapshot(user: User):

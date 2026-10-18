@@ -7,6 +7,26 @@
 <section class="intro"><div><div class="eyebrow">ONE GRAPH. SHARED CONTEXT.</div><h1>Memory that evolves.<br>Agents that coordinate.</h1><p>Track what your agents know, what changed, and what happens next.<br>Explore the evidence stored in FalkorDB.</p></div><div class="hero-path"><span>Message</span><i>SUPPORTS ↓</i><span>Memory</span><i>USES_MEMORY ↑</i><span>Coordinator → Executor</span></div></section>
 <div class="toolbar"><label>Demo user <select id="user"><option value="alice">Alice</option><option value="bob">Bob</option></select></label><small>Synthetic data · Not authentication</small><div class="spacer"></div><button id="refresh" class="quiet">Refresh</button><button id="resume" class="quiet">Resume pending tasks</button><button id="demo">▶ Run full demo</button></div>
 <p id="error" role="alert" hidden></p>
+<section id="knowledge-panel" class="panel knowledge-panel" data-state="loading">
+<div class="panel-title"><h2>Knowledge graph</h2><span id="graph-scope">CURRENT · ALICE</span></div>
+<div class="graph-toolbar">
+<label>Graph scope <select id="graph-context"><option value="current:alice">Alice · current</option><option value="current:bob">Bob · current</option></select></label>
+<button id="graph-reload" class="quiet">Reload graph</button>
+<select id="graph-focus" aria-label="Graph focus" data-graph-control><option value="all">All evidence</option><option value="revisions">Memory revisions</option><option value="handoff">Agent handoff</option></select>
+<button id="graph-revisions" class="quiet" data-graph-control>Focus revisions</button>
+<button id="graph-handoff" class="quiet" data-graph-control>Focus handoff</button>
+<button id="graph-arrange" class="quiet" data-graph-control>Auto arrange</button>
+<button id="graph-fit" class="quiet" data-graph-control>Fit</button>
+<button id="graph-zoom-in" class="quiet" aria-label="Zoom in" data-graph-control>+</button>
+<button id="graph-zoom-out" class="quiet" aria-label="Zoom out" data-graph-control>−</button>
+<label class="graph-structural"><input id="graph-structure" type="checkbox"> Structural nodes</label>
+</div>
+<div class="graph-key"><span class="key-semantic">● Semantic</span><span class="key-procedural">⬡ Procedural</span><span class="key-episodic">◆ Episodic</span><span class="key-message">▰ Message</span><span class="key-agent">⬢ Agent</span><span class="key-task">■ Task</span><span class="key-result">⯃ Result</span></div>
+<p id="graph-revision-note" class="graph-note">SUPERSEDES arrows point from the new memory to the previous memory.</p>
+<div class="graph-workspace"><div class="graph-canvas-wrap"><div id="knowledge-graph" aria-label="Interactive read-only knowledge graph"></div><div id="graph-message" role="status">Loading the selected graph…</div></div><aside id="graph-details" aria-live="polite"><p>Click a node or edge to inspect it.</p></aside></div>
+<div class="graph-foot"><span id="graph-count">0 nodes · 0 edges</span><span id="graph-read">Querying FalkorDB…</span></div>
+<p class="graph-note">Read-only view · Drag nodes, scroll to zoom · Up to 250 nodes / 600 stored edges. Graph scope controls this panel only; the top user selector returns to the current user graph.</p>
+</section>
 <section class="workspace">
 <article class="panel conversation"><div class="panel-title"><h2>Conversation</h2><span id="mode">MOCK</span></div><div id="chat" aria-live="polite"><p class="hint">Try the examples in order, or run the full demo.</p></div><div class="examples"><button data-text="Project Atlas uses Python">① Save fact</button><button data-text="For project summaries use bullet points and cite sources">② Save procedure</button><button data-text="We switched Project Atlas to Rust">③ Revise fact</button><button data-text="What language does Project Atlas use?">④ Ask current</button><button data-text="Show Project Atlas history">⑤ Ask history</button><button data-text="Create a project summary">⑥ Hand off task</button></div><form id="form"><label class="sr" for="message">Message</label><textarea id="message" placeholder="Project Atlas uses Python" required maxlength="4000" rows="2"></textarea><button type="submit">Send ↗</button></form></article>
 <article class="panel"><div class="panel-title"><h2>Memory graph</h2><span id="count">0 MEMORIES</span></div><div class="legend"><b>EPISODIC</b><b>SEMANTIC</b><b>PROCEDURAL</b></div><div id="memories" class="scroll"></div></article>
@@ -15,4 +35,4 @@
 <section class="panel evidence-panel"><div class="panel-title"><h2>Results & evidence</h2><span>Task → Result → Memory ← Message</span></div><div id="results"></div></section>
 <section id="demo-panel" class="panel" hidden><div class="panel-title"><h2>5 Scenes / Reproducible demo</h2><span>REAL FALKORDB · MOCK LLM</span></div><p>Each run uses separate demo graphs. The Persistence scene recreates service objects; the database process stays running.</p><div id="demo-scenes"></div></section>
 <footer>MemRelay · FalkorDB is the memory, not a decoration. <a href="/docs">API docs ↗</a></footer>
-</main><script src="/static/app.js" defer></script></body></html>
+</main><script src="/static/vendor/cytoscape-3.33.1.min.js" defer></script><script src="/static/graph.js" defer></script><script src="/static/app.js" defer></script></body></html>

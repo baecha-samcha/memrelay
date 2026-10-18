@@ -1,0 +1,8 @@
+PASS: real current Alice graph is rendered.
+{"check": "real_demo_projection", "status": "PASS", "nodes": 42, "edges": 65, "supersedes": {"from": "Rust", "to": "Python"}}
+PASS: revision focus rendered at readable zoom with exact visible counts.
+PASS: Rust details and original source displayed.
+PASS: actual canvas drag, zoom, fit, arrange, revisions, handoff and details.
+PASS: demo Bob and normal Alice/Bob scope isolation.
+PASS: failed graph request clears nodes/details and reload restores them.
+PASS: stale-state protection and mobile width; no browser errors.

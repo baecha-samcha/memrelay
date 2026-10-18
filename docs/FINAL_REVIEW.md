@@ -61,3 +61,8 @@ Task ID, 상태, version으로 claim하고 매 실행 token과 임대를 부여�
 **5. Alice/Bob 격리와 재시작 내구성은 실제 인증·DB 재시작 보장과 같은가요?**
 
 아닙니다. Alice/Bob은 별도 graph로 격리하지만 선택기는 인증이 없으므로 localhost 데모 범위입니다. UI Persistence는 Store/Coordinator 객체 재생성이고 DB client/서버는 유지합니다. 별도 테스트는 독립 앱 프로세스 두 개가 같은 DB의 기억과 pending Task를 복구합니다. DB 프로세스 재시작·failover 내구성까지 검증한 것은 아닙니다.
+
+
+## 후속 시각화 릴리스
+
+기존 25개와 새 시각화 테스트 8개, **총 33개가 Unix/TCP에서 각각 통과**했습니다. 실제 브라우저의 노드·관계 렌더링과 클릭/드래그/확대, 일반/데모 사용자 격리, 장애 시 그래프 삭제를 확인했습니다. 기존 검증 기록은 당시 상태로 유지하며, 새 기능과 제한은 [KNOWLEDGE_GRAPH.md](KNOWLEDGE_GRAPH.md)를 참조하세요. 기존 영상은 시각화 추가 전 녹화이므로 추가 촬영 구간은 최신 DEMO_SCRIPT에 안내합니다.

@@ -62,7 +62,7 @@ The earlier 20/23/24-test success reports are historical suite sizes, not curren
 - Same-instance conditional writes are tested. No distributed exactly-once, failover, cross-graph transaction, DB-process restart or clock-skew guarantee.
 - 30-second task leases have no heartbeat. Failed tasks are terminal; input ingestion and context retrieval span multiple queries and may leave partial records or use a retrieval snapshot later superseded.
 - Millisecond timestamps cannot distinguish all intermediate revisions within one millisecond; use SUPERSEDES paths for ordering. Historical source filtering excludes later source additions, while other displayed metadata may reflect subsequent updates.
-- The Alice/Bob selector is not authentication. No pagination, large-data benchmark, full ontology/entity resolution or interactive node graph. Automatic demo graphs accumulate until explicitly removed.
+- The Alice/Bob selector is not authentication. No pagination, large-data benchmark, full ontology/entity resolution . Automatic demo graphs accumulate until explicitly removed.
 - Redis SDK errors are mapped to the same sanitized 503 class; a query/server error can therefore share the connection-failure presentation. Review server-side context when diagnosing it.
 - Actual LLM, Cloud and Docker remain outside the recorded automated verification. Video recording is complete per participant; playback review and external submission remain pending.
 
@@ -81,3 +81,12 @@ JavaScript syntax, Python verification-script compilation and the public-candida
 ## Connection badge color follow-up
 
 Connected now explicitly renders a green foreground, pale-green background and green border; the initial checking state is neutral, and disconnected remains red. A targeted browser presentation check passed green → injected 503/red → restored real health/green; [output](verification/connection-colors.txt). The snapshot payload was a browser fixture to isolate this visual check; this is not another database-outage test. An earlier attempt verified the green CSS but timed out waiting 30 seconds for the full snapshot to finish. No graph/agent logic was changed or pytest suite rerun for this style change.
+
+
+## Interactive knowledge graph addition
+
+The latest visualization release reran the original 25 tests and added 8 graph tests: **33 passed** on a disposable real Unix-socket instance (14.40s), and **33 passed** over independent real TCP (15.97s), each with the existing Starlette warning. [Unix log](verification/pytest-knowledge-graph.txt), [TCP log](verification/pytest-knowledge-graph-tcp.txt). Historical 25-test results above are preserved as the earlier release's evidence.
+
+Actual browser verification passed against the new API: 42 real nodes / 65 real edges in demo Alice, Rust→Python SUPERSEDES, a readable four-node/three-edge revision focus, source details, actual mouse drag, zoom/fit/preset arrangement, handoff, isolated demo Bob and normal-user switching, failed-request clearing, recovery and mobile width. [Browser log](verification/graph-browser.txt). The initial interaction script stalled while serializing a returned cyclic Cytoscape collection; it was stopped and corrected. A repeated early run was also stopped before final verification. The final script returns no collection after a click and completes without browser errors. A later Task-source assertion needed a specific selector because the actual task had three source cards; the corrected final run passed.
+
+The view uses read-only Cypher and bounded rendering. Source details in partial exports are limited to the loaded subgraph. See [KNOWLEDGE_GRAPH.md](KNOWLEDGE_GRAPH.md) for the interface, scope semantics, layout choices, actual test boundaries and remaining limitations. No core memory/agent state transition or existing API payload was changed. Live model/Cloud/Docker deployment remain outside this verification.

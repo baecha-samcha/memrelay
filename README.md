@@ -12,7 +12,7 @@ All example data is synthetic (Alice, Bob, Project Atlas). The Alice/Bob selecto
 
 - **Demo video:** recording complete; the public video URL has not been added yet.
 - **Reproduce locally:** follow Quick start below, then click **Run full demo** for the five-scene scenario.
-- **Verified:** 25 pytest tests passed on each of Unix-socket and TCP connections to real FalkorDB. [Execution logs and limitations](docs/VALIDATION.md).
+- **Verified:** 33 pytest tests (the original 25 plus 8 visualization tests) passed on each of Unix-socket and TCP connections to real FalkorDB. [Execution logs and limitations](docs/VALIDATION.md).
 - **Deployment:** no hosted app is currently provided; complete local setup is included.
 
 The one-button demo always uses **Mock LLM + real FalkorDB**. Interactive API-mode chat is a separate path; see the [verification scope](docs/VALIDATION.md).
@@ -98,6 +98,21 @@ python -m agents.worker
 
 To demonstrate a real app-process restart: create a pending task; stop only Uvicorn; start the same command again; click **Resume pending tasks**. Keep FalkorDB running. Expired running tasks become eligible after their 30-second lease. Completed tasks are not executed again.
 
+## Interactive knowledge graph
+
+The **Knowledge graph** panel reads actual FalkorDB nodes and relationships using `GRAPH.RO_QUERY`. Cytoscape.js 3.33.1 is vendored locally with its MIT license; no CDN, Node build, graph write-back or inferred edges are used.
+
+- Different colors and shapes distinguish semantic/episodic/procedural memories, messages, agents, tasks and results. Optional **Structural nodes** shows users, sessions, entities and task events.
+- Drag nodes, scroll or use +/− to zoom, **Fit**, or **Auto arrange**. Click a node/edge for stored properties, timestamps and source messages in the loaded view.
+- After **Run full demo**, **Focus revisions** makes `Rust -SUPERSEDES-> Python` prominent. The caption explains the timeline `Python → Rust`; the actual edge direction is preserved. **Focus handoff** shows agents, tasks, results and their evidence.
+- **Graph scope** can inspect Alice/Bob's current graphs or the latest isolated demo graphs. This selector controls only the graph panel. The top user selector and **Refresh** return to normal current-user views, preserving the original behavior.
+- Up to **250 nodes and 600 edges** are loaded; truncated views are marked partial. Supporting structural nodes are hidden by default. The cap bounds browser work but does not provide pagination or a large-dataset performance guarantee.
+- A failed graph request or detected connection loss clears the canvas and details. A later successful health poll does not resurrect stale graph data; reload the graph to fetch it again. Health polling runs every 15 seconds when the main UI is idle.
+
+New read-only API: `GET /api/{user}/graph`; pass `?demo_id=<10 hex characters>` to inspect an existing demo under the configured prefix. The ID comes from the automatic demo's `graph_prefix` suffix; arbitrary graph names are not accepted. An empty current-user graph remains empty: visualization does not create a User, Agent or database graph.
+
+When upgrading a running app, restart Uvicorn to register the new route, then hard-refresh the browser. The core memory model and existing API responses remain unchanged. See [visualization implementation and verification](docs/KNOWLEDGE_GRAPH.md).
+
 ## LLM modes and supported behavior
 
 Default `LLM_MODE=mock` is deterministic and makes no external LLM calls. It understands the documented English Atlas statements, language changes, history/current questions, project-summary tasks and the bullet-list-with-sources procedure. Other messages are still recorded as episodic events. Mock mode is not a general natural-language understanding system. Common question words and uncertainty/negation markers are handled conservatively; this is a bounded demo grammar, not a complete linguistic validator.
@@ -128,7 +143,7 @@ By default all persistence/integration tests start a real, disposable FalkorDBLi
 TEST_FALKORDB_URL=redis://127.0.0.1:6379 python -m pytest -q
 ```
 
-Use a dedicated test DB/credentials with graph-create/delete permission. Fixtures only remove randomly named `test_<uuid>_alice/bob` graphs. Tests cover the three memory kinds, explicit revisions, active/historical retrieval, source paths, graph isolation, handoff/procedure execution, duplicate prevention, lease recovery, actual app-process restart, connection failure, simultaneous memory updates and simultaneous task execution. Final submission verification passed **25 tests**, both on the disposable Unix-socket instance and a separate TCP server. See [validation details](docs/VALIDATION.md). Run pytest and optional Chromium checks sequentially on small machines.
+Use a dedicated test DB/credentials with graph-create/delete permission. Fixtures only remove randomly named `test_<uuid>_alice/bob` graphs. Tests cover the three memory kinds, explicit revisions, active/historical retrieval, source paths, graph isolation, handoff/procedure execution, duplicate prevention, lease recovery, actual app-process restart, connection failure, simultaneous memory updates and simultaneous task execution. The original final submission verification passed **25 tests** on both Unix-socket and TCP connections. The knowledge-graph addition reran all 25 and added 8 graph tests (**33 total**), passing on both transports; see the [latest visualization verification record](docs/KNOWLEDGE_GRAPH.md). See [validation details](docs/VALIDATION.md). Run pytest and optional Chromium checks sequentially on small machines.
 
 Optional UI smoke test (not needed to run MemRelay):
 
@@ -162,6 +177,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for model choices, concurrency limits and
 | `GET /api/health` | Actual graph query and connection status |
 | `POST /api/chat` | `{user, text, session_id?, task_id?}`; answer + memory/source evidence |
 | `GET /api/{user}/memories` | Active memories; `history=true`, `subject=Project Atlas`, `at=<epoch_ms>` |
+| `GET /api/{user}/graph` | Bounded read-only visualization; optional `demo_id` |
 | `GET /api/{user}/snapshot` | Memories, revisions, tasks, results, evidence |
 | `POST /api/{user}/tasks/{id}/execute` | Conditional Executor claim + result commit |
 | `GET /api/{user}/tasks/{id}/events` | Durable pending/running/completed/failed transitions |
