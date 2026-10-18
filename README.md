@@ -10,7 +10,14 @@ All example data is synthetic (Alice, Bob, Project Atlas). The Alice/Bob selecto
 
 ## Quick start
 
-Run commands from the downloaded/cloned repository root. Python 3.12+ recommended (verified on Python 3.13.5, Linux x86_64). No local LLM or frontend build tools required.
+Clone the public repository and run commands from its root:
+
+```bash
+git clone https://github.com/baecha-samcha/memrelay.git
+cd memrelay
+```
+
+ Python 3.12+ recommended (verified on Python 3.13.5, Linux x86_64). No local LLM or frontend build tools required.
 
 ```bash
 python3 -m venv .venv
@@ -148,4 +155,4 @@ Use a stable caller-supplied `task_id` for retryable task submission. Reusing it
 
 [Final PASS / FAIL / NOT TESTED review and five technical Q&As](docs/FINAL_REVIEW.md) describe the submission audit. The pre-fix source-integrity regression and all current test results are linked from the validation record.
 
-[DEMO_SCRIPT.md](DEMO_SCRIPT.md) provides a two-minute recording script. The user has authorized public GitHub repository creation and push. Publication is currently pending GitHub reauthentication; no remote repository has been created yet. Deployment, registration and hackathon submission have not been performed and require separate approval. No video has been recorded yet.
+[DEMO_SCRIPT.md](DEMO_SCRIPT.md) provides a two-minute recording script. Public source repository: [baecha-samcha/memrelay](https://github.com/baecha-samcha/memrelay). Repository creation and push were authorized by the user. Deployment, registration and hackathon submission have not been performed and require separate approval. No video has been recorded yet.
